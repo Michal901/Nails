@@ -190,28 +190,34 @@
   }
 
   /* ---------- gallery ---------- */
+  function itemHtml(d, it, i, p){
+    var h = d.header, t = d.techs, dm = dims(it), c = p.pos[i][0] + 1, r = p.pos[i][1] + 1;
+    var st = ' style="--c:' + c + '/' + (c + dm[0]) + ';--r:' + r + '/' + (r + dm[1]) + '"';
+    if (it.type === 'title') return '<header class="txt title"' + st + '><div class="eyebrow"><span>' + esc(h.eyebrow) + '</span><span>' + esc(h.eyebrow2) + '</span></div><h1>' + esc(h.title) + '</h1>' + (h.lead ? '<p class="lead">' + esc(h.lead) + '</p>' : '<span></span>') + '</header>';
+    if (it.type === 'techs') return '<aside class="txt techs"' + st + '><span class="small">' + esc(t.label) + '</span><ul class="techlist">' + t.items.map(function(x){ return '<li>' + esc(x) + '</li>'; }).join('') + '</ul><span class="small">' + esc(t.note) + '</span></aside>';
+    var alt = it.alt || [it.title, it.meta].filter(Boolean).join(', ') || 'Stylizacja paznokci';
+    return '<figure class="tile s' + dm[0] + '"' + st + ' tabindex="0" role="button" data-i="' + i + '" aria-label="Powiększ: ' + esc(it.title || 'zdjęcie') + '">' +
+      '<img src="' + esc(imgSrc(it)) + '" alt="' + esc(alt) + '"' + (it.src ? ' loading="lazy" decoding="async"' : '') + ' style="' + fitStyle(it) + '">' +
+      ((it.title || it.meta) ? '<figcaption>' + (it.title ? '<b>' + esc(it.title) + '</b>' : '') + (it.meta ? '<span>' + esc(it.meta) + '</span>' : '') + '</figcaption>' : '') + '</figure>';
+  }
+  /* full render: used by the /dev live preview */
   function galleryHtml(d, showHoles){
-    var p = pack(d.items, 6), h = d.header, t = d.techs;
-    var out = d.items.map(function(it, i){
-      var dm = dims(it), c = p.pos[i][0] + 1, r = p.pos[i][1] + 1;
-      var st = ' style="--c:' + c + '/' + (c + dm[0]) + ';--r:' + r + '/' + (r + dm[1]) + '"';
-      if (it.type === 'title') return '<header class="txt title"' + st + '><div class="eyebrow"><span>' + esc(h.eyebrow) + '</span><span>' + esc(h.eyebrow2) + '</span></div><h1>' + esc(h.title) + '</h1>' + (h.lead ? '<p class="lead">' + esc(h.lead) + '</p>' : '<span></span>') + '</header>';
-      if (it.type === 'techs') return '<aside class="txt techs"' + st + '><span class="small">' + esc(t.label) + '</span><ul class="techlist">' + t.items.map(function(x){ return '<li>' + esc(x) + '</li>'; }).join('') + '</ul><span class="small">' + esc(t.note) + '</span></aside>';
-      var alt = it.alt || [it.title, it.meta].filter(Boolean).join(', ') || 'Stylizacja paznokci';
-      return '<figure class="tile s' + dm[0] + '"' + st + ' tabindex="0" role="button" aria-label="Powiększ: ' + esc(it.title || 'zdjęcie') + '">' +
-        '<img src="' + esc(imgSrc(it)) + '" alt="' + esc(alt) + '"' + (it.src ? ' loading="lazy"' : '') + ' style="' + fitStyle(it) + '">' +
-        ((it.title || it.meta) ? '<figcaption>' + (it.title ? '<b>' + esc(it.title) + '</b>' : '') + (it.meta ? '<span>' + esc(it.meta) + '</span>' : '') + '</figcaption>' : '') + '</figure>';
-    }).join('');
+    var p = pack(d.items, 6);
+    var out = d.items.map(function(it, i){ return itemHtml(d, it, i, p); }).join('');
     if (showHoles) out += p.holes.map(function(x){ return '<div class="empty-tile" aria-hidden="true" style="--c:' + (x[0] + 1) + '/' + (x[0] + 2) + ';--r:' + (x[1] + 1) + '/' + (x[1] + 2) + '"></div>'; }).join('');
     return '<div class="wrap"><section class="grid">' + out + '</section></div>';
   }
-  function bindTiles(container){
-    var tiles = Array.prototype.slice.call(container.querySelectorAll('.tile'));
-    tiles.forEach(function(el, k){
-      el.addEventListener('click', function(){ openLb(tiles, k); });
-      el.addEventListener('keydown', function(e){ if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openLb(tiles, k); } });
-    });
+  /* clicks on any tile open the viewer over all photos of that data set */
+  function bindTiles(container, d){
+    function open(el){ if (el) openLb(d, +el.getAttribute('data-i'), el); }
+    container.addEventListener('click', function(e){ open(e.target.closest('.tile')); });
+    container.addEventListener('keydown', function(e){ var el = e.target.closest && e.target.closest('.tile'); if (el && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); open(el); } });
   }
+  /* fade images in as they arrive */
+  function markLoaded(img){ img.classList.add('in'); }
+  document.addEventListener('load', function(e){ if (e.target.tagName === 'IMG' && e.target.closest('.tile')) markLoaded(e.target); }, true);
+  document.addEventListener('error', function(e){ if (e.target.tagName === 'IMG' && e.target.closest('.tile')) markLoaded(e.target); }, true);
+  function markReady(scope){ Array.prototype.forEach.call(scope.querySelectorAll('.tile img'), function(img){ if (img.complete) markLoaded(img); }); }
 
   /* ---------- viewer ---------- */
   var lb = document.createElement('div'); lb.id = 'lb'; lb.hidden = true;
@@ -222,18 +228,24 @@
     '<button class="lb-nav" data-lb="next" aria-label="Następne zdjęcie">›</button>';
   document.body.appendChild(lb);
   var lbImg = lb.querySelector('#lb-img'), lbT = lb.querySelector('#lb-title'), lbM = lb.querySelector('#lb-meta'), lbC = lb.querySelector('#lb-count');
-  var lbTiles = [], lbPos = 0, lbLast = null;
+  var lbData = null, lbList = [], lbPos = 0, lbLast = null;
   function pad(n){ return (n < 10 ? '0' : '') + n; }
   function lbShow(){
-    var t = lbTiles[lbPos], img = t.querySelector('img'), b = t.querySelector('figcaption b'), s = t.querySelector('figcaption span');
+    var it = lbData.items[lbList[lbPos]];
     lbImg.style.animation = 'none'; void lbImg.offsetWidth; lbImg.style.animation = '';
-    lbImg.src = img.src; lbImg.alt = img.alt;
-    lbT.textContent = b ? b.textContent : ''; lbM.textContent = s ? s.textContent : '';
-    lbC.textContent = pad(lbPos + 1) + ' / ' + pad(lbTiles.length);
+    lbImg.src = imgSrc(it); lbImg.alt = it.alt || [it.title, it.meta].filter(Boolean).join(', ') || 'Stylizacja paznokci';
+    lbT.textContent = it.title || ''; lbM.textContent = it.meta || '';
+    lbC.textContent = pad(lbPos + 1) + ' / ' + pad(lbList.length);
+    var nx = lbData.items[lbList[(lbPos + 1) % lbList.length]]; if (nx && nx.src) { var pre = new Image(); pre.src = imgSrc(nx); }
   }
-  function openLb(tiles, i){ lbTiles = tiles; lbPos = i; lbLast = tiles[i]; lbShow(); lb.hidden = false; document.body.style.overflow = 'hidden'; lb.querySelector('[data-lb="close"]').focus(); }
+  function openLb(d, itemIndex, el){
+    lbData = d; lbList = [];
+    d.items.forEach(function(it, i){ if (it.type === 'photo') lbList.push(i); });
+    lbPos = Math.max(0, lbList.indexOf(itemIndex)); lbLast = el || null;
+    lbShow(); lb.hidden = false; document.body.style.overflow = 'hidden'; lb.querySelector('[data-lb="close"]').focus();
+  }
   function closeLb(){ lb.hidden = true; document.body.style.overflow = ''; if (lbLast && document.contains(lbLast)) lbLast.focus(); }
-  function step(d){ if (lbTiles.length < 2) return; lbPos = (lbPos + d + lbTiles.length) % lbTiles.length; lbShow(); }
+  function step(dd){ if (lbList.length < 2) return; lbPos = (lbPos + dd + lbList.length) % lbList.length; lbShow(); }
   lb.addEventListener('click', function(e){
     var b = e.target.closest('[data-lb]');
     if (b) { var a = b.getAttribute('data-lb'); if (a === 'close') closeLb(); else step(a === 'next' ? 1 : -1); return; }
@@ -263,7 +275,33 @@
 
   /* ================= GALLERY PAGE ================= */
   if (MODE === 'gallery') {
-    load().then(function(d){ root.innerHTML = galleryHtml(d, false); bindTiles(root); });
+    var FIRST = 12, MORE = 9;
+    load().then(function(d){
+      var p = pack(d.items, 6), shown = 0;
+      root.innerHTML = '<div class="wrap"><section class="grid" id="grid"></section><div class="more" id="more" aria-hidden="true"><span></span><span></span><span></span></div></div>';
+      var grid = document.getElementById('grid'), more = document.getElementById('more');
+      bindTiles(grid, d);
+      function next(n){
+        var end = Math.min(d.items.length, shown + n), html = '';
+        for (var i = shown; i < end; i++) html += itemHtml(d, d.items[i], i, p);
+        grid.insertAdjacentHTML('beforeend', html); shown = end; markReady(grid);
+        if (shown >= d.items.length) { if (io) io.disconnect(); removeEventListener('scroll', kick); removeEventListener('resize', kick); more.remove(); }
+      }
+      var io = null, ticking = false;
+      /* keep adding batches while the loader is within 800px of the screen */
+      function fill(){
+        ticking = false;
+        if (shown >= d.items.length || !document.contains(more)) return;
+        if (more.getBoundingClientRect().top < innerHeight + 800) { next(MORE); requestAnimationFrame(fill); }
+      }
+      function kick(){ if (!ticking) { ticking = true; requestAnimationFrame(fill); } }
+      next(FIRST);
+      if (shown < d.items.length) {
+        if ('IntersectionObserver' in window) { io = new IntersectionObserver(kick, {rootMargin: '800px 0px'}); io.observe(more); }
+        addEventListener('scroll', kick, {passive: true}); addEventListener('resize', kick);
+        kick();
+      }
+    });
     return;
   }
 
@@ -324,7 +362,7 @@
     clearTimeout(pvT);
     pvT = setTimeout(function(){
       var pv = document.getElementById('pv'); if (!pv) return;
-      pv.innerHTML = galleryHtml(state, true); bindTiles(pv);
+      pv.innerHTML = galleryHtml(state, true); markReady(pv); if (!pv._bound) { bindTiles(pv, {get items(){ return state.items; }}); pv._bound = 1; }
       var holes = pack(state.items, 6).holes.length, hEl = document.getElementById('holes');
       if (hEl) { hEl.textContent = holes ? 'Wolne pola: ' + holes : 'Siatka pełna'; hEl.className = holes ? 'warn' : ''; }
     }, 120);
@@ -427,7 +465,13 @@
     var n = 0;
     Object.keys(uploads).forEach(function(p){ if (used[p]) { zip.file(p, uploads[p]); n++; } });
     btn.disabled = true;
-    zip.generateAsync({type:'blob'}).then(function(blob){
+    var json = JSON.stringify(state);
+    fetch(BASE + 'index.html', {cache: 'no-cache'}).then(function(r){ return r.ok ? r.text() : null; }).catch(function(){ return null; }).then(function(html){
+      if (html && html.indexOf('id="gallery-data"') > -1) {
+        zip.file('index.html', html.replace(/(<script type="application\/json" id="gallery-data">)[\s\S]*?(<\/script>)/, function(m, a, b){ return a + json.replace(/</g, '\\u003c') + b; }));
+      }
+      return zip.generateAsync({type:'blob'});
+    }).then(function(blob){
       var a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'galeria-zmiany.zip';
       document.body.appendChild(a); a.click(); a.remove();
       saved = clone(state); dirty = false; updateStatus();
