@@ -38,11 +38,12 @@ button,input,select,textarea{font:inherit;color:inherit}
 .tile img.in{opacity:1}
 .tile::before{content:"";position:absolute;inset:-30%;z-index:2;pointer-events:none;background:linear-gradient(115deg,transparent 42%,rgba(255,255,255,.55) 50%,transparent 58%);transform:translateX(-120%);transition:transform 1s cubic-bezier(.2,.8,.2,1)}
 .tile::after{content:"";position:absolute;inset:0;z-index:4;border:3px solid var(--accent);opacity:0;transition:opacity .3s;pointer-events:none}
-.tile figcaption{position:absolute;left:0;bottom:0;z-index:3;max-width:100%;background:#000;color:#fff;padding:10px 14px 11px;display:flex;flex-direction:column;gap:1px;transform:translateY(101%);transition:transform .45s cubic-bezier(.2,.8,.2,1)}
-.tile figcaption b{font-family:var(--display);font-style:italic;font-weight:600;font-size:18px;line-height:1.15}
-.tile figcaption span{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:#FF6276}
-.tile.s3 figcaption b{font-size:26px}
-@container (max-width:639px){.tile figcaption{transform:none;left:0;right:0;max-width:none;padding:7px 10px 8px;gap:2px}.tile figcaption b,.tile.s2 figcaption b,.tile.s3 figcaption b{font-size:15px;line-height:1.2}.tile figcaption span{font-size:10px;letter-spacing:.05em}.tile figcaption b,.tile figcaption span{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}}
+.tile figcaption{position:absolute;left:0;right:0;bottom:0;z-index:3;background:#000;color:#fff;padding:9px 12px 10px;display:flex;flex-direction:column;gap:2px;transform:translateY(101%);transition:transform .45s cubic-bezier(.2,.8,.2,1)}
+.tile figcaption b{font-family:var(--display);font-style:italic;font-weight:600;font-size:17px;line-height:1.2}
+.tile figcaption span{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:#FF6276}
+.tile figcaption b,.tile figcaption span{display:block;min-height:1.2em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@container (max-width:639px){.tile figcaption{padding:7px 10px 8px}.tile figcaption b{font-size:15px}.tile figcaption span{font-size:10px;letter-spacing:.05em}}
+@media (hover:none){.tile figcaption{transform:none}}
 @media (hover:hover){
   .tile:hover img{transform:scale(calc(var(--z,1) * 1.07))}
   .tile:hover::before{transform:translateX(120%)}

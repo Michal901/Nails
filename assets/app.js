@@ -198,7 +198,7 @@
     var alt = it.alt || [it.title, it.meta].filter(Boolean).join(', ') || 'Stylizacja paznokci';
     return '<figure class="tile s' + dm[0] + '"' + st + ' tabindex="0" role="button" data-i="' + i + '" aria-label="Powiększ: ' + esc(it.title || 'zdjęcie') + '">' +
       '<img src="' + esc(imgSrc(it)) + '" alt="' + esc(alt) + '"' + (it.src ? ' loading="lazy" decoding="async"' : '') + ' style="' + fitStyle(it) + '">' +
-      ((it.title || it.meta) ? '<figcaption>' + (it.title ? '<b>' + esc(it.title) + '</b>' : '') + (it.meta ? '<span>' + esc(it.meta) + '</span>' : '') + '</figcaption>' : '') + '</figure>';
+      ((it.title || it.meta) ? '<figcaption><b>' + esc(it.title || '') + '</b><span>' + esc(it.meta || '') + '</span></figcaption>' : '') + '</figure>';
   }
   /* full render: used by the /dev live preview */
   function galleryHtml(d, showHoles){
