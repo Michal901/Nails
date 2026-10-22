@@ -1,9 +1,9 @@
 {
   "header": {
-    "eyebrow": "Portfolio",
+    "eyebrow": "Dominika momot",
     "eyebrow2": "Manicure · Pedicure",
-    "title": "Stylizacja paznokci",
-    "lead": "Wybrane prace z salonu. Kliknij zdjęcie, żeby je powiększyć."
+    "title": "Moje prace",
+    "lead": "Każde zdjęcie to dłonie moich klientek. Znajdź stylizację dla siebie."
   },
   "techs": {
     "label": "Techniki",
@@ -14,7 +14,7 @@
       "Przedłużanie",
       "Pedicure"
     ],
-    "note": "Zdjęcia przykładowe · do podmiany na prawdziwe prace"
+    "note": "Zapisy telefonicznie i przez Booksy"
   },
   "items": [
     {
