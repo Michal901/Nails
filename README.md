@@ -18,4 +18,4 @@
 - `images/` – zdjęcia
 - `_redirects` – reguła Netlify, żeby `/dev` działało bez ukośnika na końcu
 
-`/dev` nie ma hasła. Nikt obcy niczego nim nie zmieni, bo zmiany trafiają tylko do pobranego pliku, ale może go otworzyć.
+`/dev` jest chroniony PIN-em (zmiana PIN-u: `PIN_HASH` w `assets/app.js`). To blokada w przeglądarce, nie prawdziwe hasło serwera — wystarcza, bo panel niczego nie zmienia online.

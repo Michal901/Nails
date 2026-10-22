@@ -338,6 +338,7 @@
   function change(structural){ dirty = true; if (structural) renderList(); refreshPreview(); updateStatus(); }
 
   root.addEventListener('input', function(e){
+    if (!state) return;
     var el = e.target, path = el.getAttribute('data-path');
     if (path) {
       var parts = path.split('.');
@@ -353,6 +354,7 @@
   });
 
   root.addEventListener('click', function(e){
+    if (!state) return;
     var pk = e.target.closest('[data-pick]');
     if (pk) {
       var pit = state.items[+pk.getAttribute('data-pick')], rc = pk.getBoundingClientRect();
@@ -434,6 +436,40 @@
   }
   window.addEventListener('beforeunload', function(e){ if (dirty) { e.preventDefault(); e.returnValue = ''; } });
 
-  load().then(function(d){ saved = d; state = clone(d); showDev(); });
+  /* ---------- PIN gate ---------- */
+  var PIN_HASH = '9d29b789b1e8a168cdaefbc654985e8b8709f8b2914019d78cc23f8f914fcbb4';
+  var PIN_SALT = 'galeria-dev:';
+  function start(){ load().then(function(d){ saved = d; state = clone(d); showDev(); }); }
+  function sha256(text){
+    return crypto.subtle.digest('SHA-256', new TextEncoder().encode(text)).then(function(buf){
+      return Array.prototype.map.call(new Uint8Array(buf), function(b){ return ('0' + b.toString(16)).slice(-2); }).join('');
+    });
+  }
+  function unlocked(){ try { return sessionStorage.getItem('devUnlocked') === PIN_HASH; } catch(e) { return false; } }
+  function showPin(){
+    root.innerHTML = '<form class="pin" id="pin-form" autocomplete="off" novalidate>' +
+      '<span class="tag">DEV</span><h2>Panel edycji</h2><p class="hint">Wpisz PIN, żeby wejść.</p>' +
+      '<input id="pin-in" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="4" aria-label="PIN" autofocus>' +
+      '<button class="b primary" type="submit">Wejdź</button><p class="pin-err" id="pin-err" role="alert"></p></form>';
+    var form = document.getElementById('pin-form'), inp = document.getElementById('pin-in'), err = document.getElementById('pin-err');
+    var fails = 0, lockUntil = 0;
+    inp.focus();
+    inp.addEventListener('input', function(){ inp.value = inp.value.replace(/\D/g, '').slice(0, 4); err.textContent = ''; if (inp.value.length === 4) check(); });
+    form.addEventListener('submit', function(e){ e.preventDefault(); check(); });
+    function check(){
+      var now = Date.now();
+      if (now < lockUntil) { err.textContent = 'Za dużo prób. Spróbuj za ' + Math.ceil((lockUntil - now) / 1000) + ' s.'; return; }
+      if (inp.value.length !== 4) { err.textContent = 'PIN ma 4 cyfry.'; return; }
+      if (!window.crypto || !crypto.subtle) { err.textContent = 'Otwórz panel przez https, żeby wpisać PIN.'; return; }
+      sha256(PIN_SALT + inp.value).then(function(h){
+        if (h === PIN_HASH) { try { sessionStorage.setItem('devUnlocked', PIN_HASH); } catch(e) {} start(); return; }
+        fails++; inp.value = ''; form.classList.remove('shake'); void form.offsetWidth; form.classList.add('shake');
+        if (fails >= 5) { lockUntil = Date.now() + 30000; fails = 0; err.textContent = 'Za dużo prób. Spróbuj za 30 s.'; }
+        else err.textContent = 'Zły PIN.';
+        inp.focus();
+      });
+    }
+  }
+  if (unlocked()) start(); else showPin();
 
 })();
