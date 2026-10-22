@@ -18,6 +18,10 @@
   },
   "items": [
     {
+      "id": "title",
+      "type": "title"
+    },
+    {
       "id": "bordo-zlota-folia",
       "type": "photo",
       "size": 3,
@@ -26,10 +30,6 @@
       "art": "",
       "src": "images/bordo-zlota-folia.jpg",
       "fy": 38
-    },
-    {
-      "id": "title",
-      "type": "title"
     },
     {
       "id": "granatowy-brokat",
@@ -84,7 +84,7 @@
     {
       "id": "happiness",
       "type": "photo",
-      "size": 1,
+      "size": 2,
       "title": "Happiness",
       "meta": "Owal · naklejki i brokat",
       "art": "",
@@ -112,12 +112,16 @@
     {
       "id": "neonowy-french",
       "type": "photo",
-      "size": 1,
+      "size": 2,
       "title": "Neonowy french",
       "meta": "Krótkie · brokat przy skórkach",
       "art": "",
       "src": "images/neonowy-french.jpg",
       "fy": 62
+    },
+    {
+      "id": "techs",
+      "type": "techs"
     },
     {
       "id": "baby-boomer-kwiatek",
@@ -128,10 +132,6 @@
       "art": "",
       "src": "images/baby-boomer-kwiatek.jpg",
       "fy": 34
-    },
-    {
-      "id": "techs",
-      "type": "techs"
     },
     {
       "id": "mikro-french",
@@ -204,7 +204,7 @@
     {
       "id": "sliwka-bez-cyrkonie",
       "type": "photo",
-      "size": 1,
+      "size": 2,
       "title": "Śliwka i beż",
       "meta": "Owal · cyrkonie",
       "art": "",
@@ -214,7 +214,7 @@
     {
       "id": "nude-chrom-serce",
       "type": "photo",
-      "size": 1,
+      "size": 2,
       "title": "Nude z perłowym chromem",
       "meta": "Migdał · złote serce",
       "art": "",
@@ -224,7 +224,7 @@
     {
       "id": "czerwien-fala",
       "type": "photo",
-      "size": 3,
+      "size": 2,
       "title": "Czerwień z falą",
       "meta": "Owal · ręczne zdobienie",
       "art": "",
@@ -234,7 +234,7 @@
     {
       "id": "rozowy-brokat",
       "type": "photo",
-      "size": 1,
+      "size": 2,
       "title": "Różowy brokat",
       "meta": "Owal · brokatowe ombre",
       "art": "",
@@ -274,7 +274,7 @@
     {
       "id": "french-serduszka",
       "type": "photo",
-      "size": 2,
+      "size": 1,
       "title": "French z serduszkami",
       "meta": "Kwadrat · serduszka",
       "art": "",
@@ -304,7 +304,7 @@
     {
       "id": "mleko-i-zloto",
       "type": "photo",
-      "size": 2,
+      "size": 3,
       "title": "Mleko i złoto",
       "meta": "Migdał · złoty brokat",
       "art": "",
