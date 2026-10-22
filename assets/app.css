@@ -42,7 +42,7 @@ button,input,select,textarea{font:inherit;color:inherit}
 .tile figcaption b{font-family:var(--display);font-style:italic;font-weight:600;font-size:18px;line-height:1.15}
 .tile figcaption span{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:#FF6276}
 .tile.s3 figcaption b{font-size:26px}
-@container (max-width:639px){.tile figcaption{transform:none;padding:7px 10px 8px}.tile figcaption b{font-size:15px}.tile.s2 figcaption b,.tile.s3 figcaption b{font-size:20px}}
+@container (max-width:639px){.tile figcaption{transform:none;left:0;right:0;max-width:none;padding:7px 10px 8px;gap:2px}.tile figcaption b,.tile.s2 figcaption b,.tile.s3 figcaption b{font-size:15px;line-height:1.2}.tile figcaption span{font-size:10px;letter-spacing:.05em}.tile figcaption b,.tile figcaption span{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}}
 @media (hover:hover){
   .tile:hover img{transform:scale(calc(var(--z,1) * 1.07))}
   .tile:hover::before{transform:translateX(120%)}
