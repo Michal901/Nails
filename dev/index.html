@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="pl" data-mode="dev" data-base="../">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>DEV · Panel edycji galerii</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@1,6..96,400..700&amp;family=Figtree:wght@400;500;600&amp;family=DM+Mono:wght@400;500&amp;display=swap">
+<link rel="stylesheet" href="../assets/app.css">
+<style>body{margin:0}[hidden]{display:none!important}img{max-width:100%}</style>
+</head>
+<body>
+<div id="root"></div>
+<!-- Zapasowa kopia danych na wypadek otwarcia pliku bez serwera; strona najpierw czyta gallery.json -->
+<script type="application/json" id="gallery-data">{"header": {"eyebrow": "Portfolio", "eyebrow2": "Manicure · Pedicure", "title": "Stylizacja paznokci", "lead": "Wybrane prace z salonu. Kliknij zdjęcie, żeby je powiększyć."}, "techs": {"label": "Techniki", "items": ["Hybryda", "Żel", "Akryl", "Przedłużanie", "Pedicure"], "note": "Zdjęcia przykładowe · do podmiany na prawdziwe prace"}, "items": [{"id": "title", "type": "title"}, {"id": "sage", "type": "photo", "size": 3, "title": "Szałwia w kropki", "meta": "Hybryda · squoval", "art": "", "src": "images/sage.jpg", "asset": ""}, {"id": "chrome", "type": "photo", "size": 2, "title": "Czarny chrom", "meta": "Akryl · stiletto", "art": "", "src": "images/chrome.jpg", "asset": ""}, {"id": "french", "type": "photo", "size": 2, "title": "French", "meta": "Hybryda · squoval", "art": "", "src": "images/french.jpg", "asset": ""}, {"id": "burgund", "type": "photo", "size": 1, "title": "Burgund", "meta": "Hybryda · owal", "art": "", "src": "images/burgund.jpg", "asset": ""}, {"id": "peach", "type": "photo", "size": 2, "title": "Brzoskwinia z brokatem", "meta": "Żel · balerina", "art": "", "src": "images/peach.jpg", "asset": ""}, {"id": "wedding", "type": "photo", "size": 3, "title": "Ślubne, perłowy róż", "meta": "Przedłużanie · migdał", "art": "wedding", "src": "", "asset": ""}, {"id": "nude", "type": "photo", "size": 1, "title": "Mleczny nude", "meta": "Hybryda · migdał", "art": "nude", "src": "", "asset": ""}, {"id": "lavender", "type": "photo", "size": 2, "title": "Lawendowe kwiaty", "meta": "Hybryda · kwadrat", "art": "lavender", "src": "", "asset": ""}, {"id": "ombre", "type": "photo", "size": 1, "title": "Ombre", "meta": "Żel · owal", "art": "ombre", "src": "", "asset": ""}, {"id": "gold", "type": "photo", "size": 2, "title": "Czerń i złoto", "meta": "Żel · balerina", "art": "gold", "src": "", "asset": ""}, {"id": "techs", "type": "techs"}, {"id": "silver", "type": "photo", "size": 1, "title": "Srebrne lustro", "meta": "Żel · balerina", "art": "silver", "src": "", "asset": ""}, {"id": "hearts", "type": "photo", "size": 1, "title": "Serduszka", "meta": "Hybryda · kwadrat", "art": "hearts", "src": "", "asset": ""}]}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>
