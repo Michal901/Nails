@@ -72,78 +72,8 @@
       "asset": ""
     },
     {
-      "id": "wedding",
-      "type": "photo",
-      "size": 3,
-      "title": "Ślubne, perłowy róż",
-      "meta": "Przedłużanie · migdał",
-      "art": "wedding",
-      "src": "",
-      "asset": ""
-    },
-    {
-      "id": "nude",
-      "type": "photo",
-      "size": 1,
-      "title": "Mleczny nude",
-      "meta": "Hybryda · migdał",
-      "art": "nude",
-      "src": "",
-      "asset": ""
-    },
-    {
-      "id": "lavender",
-      "type": "photo",
-      "size": 2,
-      "title": "Lawendowe kwiaty",
-      "meta": "Hybryda · kwadrat",
-      "art": "lavender",
-      "src": "",
-      "asset": ""
-    },
-    {
-      "id": "ombre",
-      "type": "photo",
-      "size": 1,
-      "title": "Ombre",
-      "meta": "Żel · owal",
-      "art": "ombre",
-      "src": "",
-      "asset": ""
-    },
-    {
-      "id": "gold",
-      "type": "photo",
-      "size": 2,
-      "title": "Czerń i złoto",
-      "meta": "Żel · balerina",
-      "art": "gold",
-      "src": "",
-      "asset": ""
-    },
-    {
       "id": "techs",
       "type": "techs"
-    },
-    {
-      "id": "silver",
-      "type": "photo",
-      "size": 1,
-      "title": "Srebrne lustro",
-      "meta": "Żel · balerina",
-      "art": "silver",
-      "src": "",
-      "asset": ""
-    },
-    {
-      "id": "hearts",
-      "type": "photo",
-      "size": 1,
-      "title": "Serduszka",
-      "meta": "Hybryda · kwadrat",
-      "art": "hearts",
-      "src": "",
-      "asset": ""
     }
   ]
 }
